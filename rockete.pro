@@ -3,7 +3,7 @@ TARGET = rockete
 DESTDIR = ./debug
 QT += gui core opengl xml
 CONFIG += debug_and_release console qtestlib
-DEFINES += QT_LARGEFILE_SUPPORT QT_OPENGL_LIB
+DEFINES += QT_OPENGL_LIB
 RESOURCES = rockete.qrc
 SOURCES += \
  ./src/Action.cpp \
@@ -92,9 +92,8 @@ FORMS += ./ui/rockete.ui \
 INCLUDEPATH = ./src $(LIBROCKET)/Include
 
 win32 {
-    INCLUDEPATH += $(LIBROCKET)/Include
     LIBS += \
-        -L$(LIBROCKET)/Build \
+        -L$(LIBROCKET)/bin \
         -lkernel32 \
         -luser32 \
         -lshell32 \
@@ -113,20 +112,8 @@ win32 {
 
     CONFIG(debug, debug|release) {
         LIBS += -lRocketCore_d -lRocketControls_d
-        
-        exists( $(LIBROCKET)/Build/RocketFreeType_d.lib ) {
-            LIBS += -lRocketFreeType_d
-            DEFINES += ROCKET_FREETYPE
-        }
-    }
-    
-    CONFIG(release, debug|release) {
+    } else {
         LIBS += -lRocketCore -lRocketControls
-        
-        exists( $(LIBROCKET)/Build/RocketFreeType.lib ) {
-            LIBS += -lRocketFreeType
-            DEFINES += ROCKET_FREETYPE
-        }
     }
 }
 unix {
